@@ -1,0 +1,8 @@
+name: Lavalib
+version: '${version}'
+main: me.lavamen.lavalib.Lavalib
+api-version: 1.16
+prefix: LavaLib
+authors: [ Lavamen, Goodini ]
+description: LavaLib
+website: ok.ru
