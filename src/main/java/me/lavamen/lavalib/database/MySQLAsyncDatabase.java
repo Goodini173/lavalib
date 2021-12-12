@@ -1,6 +1,5 @@
 package me.lavamen.lavalib.database;
 
-import me.lavamen.lavalib.database.lite.AbstractAsyncDatabase;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 

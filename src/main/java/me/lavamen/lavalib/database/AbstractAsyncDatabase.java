@@ -1,4 +1,4 @@
-package me.lavamen.lavalib.database.lite;
+package me.lavamen.lavalib.database;
 
 import me.lavamen.lavalib.database.IDatabase;
 import me.lavamen.lavalib.database.SQLTask;
