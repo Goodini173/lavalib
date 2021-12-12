@@ -6,3 +6,6 @@ prefix: LavaLib
 authors: [ Lavamen, Goodini ]
 description: LavaLib
 website: ok.ru
+commands:
+  example:
+

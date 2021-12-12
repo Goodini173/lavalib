@@ -1,6 +1,9 @@
 package me.lavamen.lavalib;
 
-import me.lavamen.lavalib.commands.StressTestCommand;
+import me.lavamen.lavalib.commands.BaseCommandExecutor;
+import me.lavamen.lavalib.commands.CommandManager;
+import me.lavamen.lavalib.example.ExampleCommand;
+import me.lavamen.lavalib.gui.SpecifiedGUIBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Lavalib extends JavaPlugin {
@@ -10,7 +13,8 @@ public final class Lavalib extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-      //  getCommand("stresstest").setExecutor(new StressTestCommand());
+        CommandManager.register(new ExampleCommand());
+        getCommand("example").setExecutor(new BaseCommandExecutor());
     }
 
     @Override
