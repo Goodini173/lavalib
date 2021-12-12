@@ -3,7 +3,6 @@ package me.lavamen.lavalib;
 import me.lavamen.lavalib.commands.BaseCommandExecutor;
 import me.lavamen.lavalib.commands.CommandManager;
 import me.lavamen.lavalib.example.ExampleCommand;
-import me.lavamen.lavalib.gui.SpecifiedGUIBuilder;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Lavalib extends JavaPlugin {

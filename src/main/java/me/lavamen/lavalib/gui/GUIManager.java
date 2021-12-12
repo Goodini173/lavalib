@@ -6,9 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
-import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 
@@ -22,29 +22,29 @@ public class GUIManager implements Listener {
         Bukkit.getPluginManager().registerEvents(this, plugin);
     }
 
-    public void registerGui(GUI gui) {
+    public void registerGui(@NotNull GUI gui) {
         guiMap.put(gui.getInventory(), gui);
     }
 
-    public void unregisterGui(GUI gui) {
+    public void unregisterGui(@NotNull GUI gui) {
         guiMap.remove(gui.getInventory());
     }
 
     @EventHandler
-    public void inventoryInteractEvent(InventoryClickEvent e) {
-        if(guiMap.containsKey(e.getInventory())) guiMap.get(e.getInventory()).onInteraction(e);
+    public void inventoryInteractEvent(@NotNull InventoryClickEvent e) {
+        if (guiMap.containsKey(e.getInventory())) guiMap.get(e.getInventory()).onInteraction(e);
     }
 
     @EventHandler
-    public void inventoryCloseEvent(InventoryCloseEvent e) {
-        if(guiMap.containsKey(e.getInventory())) {
+    public void inventoryCloseEvent(@NotNull InventoryCloseEvent e) {
+        if (guiMap.containsKey(e.getInventory())) {
             GUI gui = guiMap.get(e.getInventory());
             gui.onClosing(e);
-            if(gui.isTemporary()) unregisterGui(gui);
+            if (gui.isTemporary()) unregisterGui(gui);
         }
     }
 
-    public Plugin getPlugin() {
+    public @NotNull Plugin getPlugin() {
         return plugin;
     }
 }

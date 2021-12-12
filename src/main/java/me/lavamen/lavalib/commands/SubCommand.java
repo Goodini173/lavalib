@@ -22,8 +22,9 @@ public class SubCommand {
     }
 
     public void execute(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if(args.length < baseCommand.min() || (baseCommand.max() > 0 && args.length > baseCommand.max())) return;
-        if((sender instanceof Player && !baseCommand.player()) || (sender instanceof ConsoleCommandSender && !baseCommand.console())) return;
+        if (args.length < baseCommand.min() || (baseCommand.max() > 0 && args.length > baseCommand.max())) return;
+        if ((sender instanceof Player && !baseCommand.player()) || (sender instanceof ConsoleCommandSender && !baseCommand.console()))
+            return;
         try {
             method.invoke(executor, sender, command, label, args);
         } catch (IllegalAccessException | InvocationTargetException e) {

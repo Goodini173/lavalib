@@ -2,7 +2,6 @@ package me.lavamen.lavalib.commands;
 
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,17 +11,17 @@ import java.util.Map;
 
 public class CommandManager {
 
-    private static Map<String, Map<String, SubCommand>> commands = new Object2ObjectArrayMap<>();
+    private static final Map<String, Map<String, SubCommand>> commands = new Object2ObjectArrayMap<>();
 
     public static void register(@NotNull AdvancedCommand advancedCommand) {
-        Class clazz = advancedCommand.getClass();
+        Class<? extends AdvancedCommand> clazz = advancedCommand.getClass();
         Method[] methods = clazz.getMethods();
 
         for (Method method : methods) {
-            if(method.isAnnotationPresent(BaseCommand.class)) {
+            if (method.isAnnotationPresent(BaseCommand.class)) {
                 BaseCommand command = method.getAnnotation(BaseCommand.class);
                 Map<String, SubCommand> map = commands.get(command.mainCommand());
-                if(map == null) {
+                if (map == null) {
                     map = new Object2ObjectArrayMap<>();
                     commands.put(command.mainCommand(), map);
                 }
@@ -44,15 +43,15 @@ public class CommandManager {
     }
 
     public static @Nullable SubCommand getSubCommand(@NotNull String mainCommand, @NotNull String subCommand) {
-        if(!commands.containsKey(mainCommand)) return null;
+        if (!commands.containsKey(mainCommand)) return null;
         return commands.get(mainCommand).get(subCommand);
     }
 
     public static @NotNull List<String> prepareHelp(@NotNull String cmd) {
         List<String> result = new ObjectArrayList<>();
-        if(commands.containsKey(cmd)) {
+        if (commands.containsKey(cmd)) {
             for (SubCommand subCommand : getSubCommands(cmd).values()) {
-                if(!subCommand.isHidden()) result.add(subCommand.help());
+                if (!subCommand.isHidden()) result.add(subCommand.help());
             }
         }
         return result;
