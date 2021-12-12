@@ -1,5 +1,7 @@
-package me.lavamen.lavalib.database;
+package me.lavamen.lavalib.database.lite;
 
+import me.lavamen.lavalib.database.IDatabase;
+import me.lavamen.lavalib.database.SQLTask;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -14,6 +16,7 @@ public abstract class AbstractAsyncDatabase implements IDatabase {
     protected final String name;
     @NotNull
     protected final Plugin plugin;
+    protected Connection connection;
 
 
     protected AbstractAsyncDatabase(@NotNull Plugin plugin, @NotNull String name) {
@@ -31,20 +34,11 @@ public abstract class AbstractAsyncDatabase implements IDatabase {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Connection c = null;
                 try {
-                    c = getConnection();
-                    task.execute(c);
+                    if(connection == null || connection.isClosed()) connection = getConnection();
+                    task.execute(connection);
                 } catch (SQLException throwables) {
                     throwables.printStackTrace();
-                } finally {
-                    if (c != null) {
-                        try {
-                            c.close();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
             }
         }.runTaskAsynchronously(plugin);
@@ -55,23 +49,14 @@ public abstract class AbstractAsyncDatabase implements IDatabase {
         new BukkitRunnable() {
             @Override
             public void run() {
-                Connection c = null;
                 try {
-                    c = getConnection();
-                    Statement s = c.createStatement();
+                    if(connection == null || connection.isClosed()) connection = getConnection();
+                    Statement s = connection.createStatement();
                     for (SQLTask task : tasks) {
                         task.execute(s);
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
-                } finally {
-                    if (c != null) {
-                        try {
-                            c.close();
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
-                    }
                 }
             }
         }.runTaskAsynchronously(plugin);
@@ -83,5 +68,5 @@ public abstract class AbstractAsyncDatabase implements IDatabase {
         return plugin;
     }
 
-    protected abstract Connection getConnection() throws SQLException;
+    protected abstract @NotNull Connection getConnection() throws SQLException;
 }

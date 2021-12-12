@@ -1,26 +1,32 @@
 package me.lavamen.lavalib.database;
 
+import me.lavamen.lavalib.database.lite.AbstractAsyncDatabase;
 import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.concurrent.Executors;
 
-public class MySQLAsyncDatabase extends AbstractAsyncDatabase{
+public class MySQLAsyncDatabase extends AbstractAsyncDatabase {
 
     private final String url;
     private final String user;
     private final String password;
 
-    protected MySQLAsyncDatabase(Plugin plugin, String name, String host, String port, String user, String password) throws SQLException {
+    protected MySQLAsyncDatabase(@NotNull Plugin plugin, @NotNull String name, @NotNull String host, @NotNull String port, @NotNull String user, @NotNull String password) throws SQLException {
         super(plugin, name);
         this.url = "jdbc:mysql://" + host + ":" + port + "/" + name;
         this.user = user;
         this.password = password;
-        getConnection().close();
+        connection = getConnection();
     }
 
     @Override
-    protected Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+    protected @NotNull Connection getConnection() throws SQLException {
+        Connection c = DriverManager.getConnection(url, user, password);
+        c.setNetworkTimeout(Executors.newSingleThreadExecutor(), 10000);
+        return c;
     }
 }

@@ -1,6 +1,9 @@
-package me.lavamen.lavalib.database;
+package me.lavamen.lavalib.database.lite;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import me.lavamen.lavalib.database.IDelayedDatabase;
+import me.lavamen.lavalib.database.SQLTask;
+import me.lavamen.lavalib.database.lite.AbstractAsyncDatabase;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.jetbrains.annotations.NotNull;
@@ -9,9 +12,9 @@ import java.util.List;
 
 public abstract class AbstractAsyncDelayedDatabase extends AbstractAsyncDatabase implements IDelayedDatabase {
 
-    private final List<SQLTask> buffer = new ObjectArrayList<>();
     protected final int delay;
     protected final int maxTasks;
+    private final List<SQLTask> buffer = new ObjectArrayList<>();
 
     protected AbstractAsyncDelayedDatabase(@NotNull Plugin plugin, @NotNull String name) {
         this(plugin, name, 20, 20);
@@ -32,7 +35,7 @@ public abstract class AbstractAsyncDelayedDatabase extends AbstractAsyncDatabase
     @Override
     public void addTask(@NotNull SQLTask task) {
         buffer.add(task);
-        if(buffer.size() >= maxTasks) clearBuffer();
+        if (buffer.size() >= maxTasks) clearBuffer();
     }
 
     @Override

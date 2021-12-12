@@ -1,5 +1,6 @@
 package me.lavamen.lavalib.database;
 
+import me.lavamen.lavalib.database.lite.AbstractAsyncDatabase;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,11 +15,11 @@ public class SQLiteAsyncDatabase extends AbstractAsyncDatabase {
     protected SQLiteAsyncDatabase(@NotNull Plugin plugin, @NotNull String name) {
         super(plugin, name);
         url = "jdbc:sqlite:" + plugin.getDataFolder() + File.separator + name;
-      //  Class.forName("org.sqlite.JDBC").getConstructor().newInstance();
+        //  Class.forName("org.sqlite.JDBC").getConstructor().newInstance();
     }
 
     @Override
-    protected Connection getConnection() throws SQLException {
+    protected @NotNull Connection getConnection() throws SQLException {
         return DriverManager.getConnection(url);
     }
 }

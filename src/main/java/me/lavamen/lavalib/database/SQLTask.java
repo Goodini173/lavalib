@@ -3,6 +3,7 @@ package me.lavamen.lavalib.database;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
 import java.sql.*;
 import java.util.function.Consumer;
 
