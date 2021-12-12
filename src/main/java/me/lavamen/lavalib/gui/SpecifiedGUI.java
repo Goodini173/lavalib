@@ -3,6 +3,8 @@ package me.lavamen.lavalib.gui;
 import it.unimi.dsi.fastutil.ints.Int2ObjectArrayMap;
 import org.bukkit.inventory.Inventory;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.Map;
 
 /**
@@ -11,14 +13,16 @@ import java.util.Map;
  */
 public class SpecifiedGUI<T> extends GUI {
 
-    protected final Map<Integer, T> someStuff = new Int2ObjectArrayMap<>();
+    protected final Map<Integer, T> someStuff;
 
-    public SpecifiedGUI(@NotNull Inventory inventory) {
-        super(inventory);
+    public SpecifiedGUI(@NotNull Inventory inventory, boolean temporary) {
+        super(inventory, temporary);
+        someStuff = new Int2ObjectArrayMap<>(inventory.getSize());
     }
 
-    public SpecifiedGUI(@NotNull Inventory inventory, @NotNull Map<Integer, T> map) {
-        super(inventory);
+    public SpecifiedGUI(@NotNull Inventory inventory, boolean temporary, @NotNull Map<Integer, T> map) {
+        super(inventory, temporary);
+        someStuff = new Int2ObjectArrayMap<>(inventory.getSize());
         someStuff.putAll(map);
     }
 
@@ -28,5 +32,14 @@ public class SpecifiedGUI<T> extends GUI {
 
     public void link(@NotNull Map<Integer, T> map) {
         someStuff.putAll(map);
+    }
+
+    public void clear() {
+        someStuff.clear();
+    }
+
+    @Nullable
+    public T getStuff(int slot) {
+        return someStuff.get(slot);
     }
 }
